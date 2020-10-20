@@ -6,6 +6,7 @@ module.exports = {
     lintOnSave: false,
     configureWebpack: {
         resolve: {
+            extensions:[".js", ".vue"],
             alias: {
                 vue$: "vue/dist/vue.esm.js",
                 src: resolve("src"),

@@ -20,6 +20,10 @@ const routes = [
         path: "/slideCheck",
         component: () => import("examples/slideCheck"),
     },
+    {
+        path: "/exConfirm",
+        component: () => import("examples/exConfirm"),
+    }
 ];
 const router = new Router({ routes });
 
