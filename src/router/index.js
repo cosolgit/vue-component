@@ -23,6 +23,10 @@ const routes = [
     {
         path: "/exConfirm",
         component: () => import("examples/exConfirm"),
+    },
+    {
+        path: "/countDown",
+        component: () => import("examples/countDown"),
     }
 ];
 const router = new Router({ routes });
