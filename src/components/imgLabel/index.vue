@@ -77,9 +77,11 @@ export default {
         this.dragStart = {};
         !this.isShowSaveBtn && this.menu.splice(1, 1);
     },
+    inject:["app"],
     mounted() {
         this.img = this.$refs["img"];
         this.menu = this.$refs["menu"];
+        this.app.changeUserInfo("ccc")
     },
     methods: {
         onDragstart(e, index) {

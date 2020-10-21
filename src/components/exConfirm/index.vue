@@ -28,7 +28,7 @@ export default {
   methods: {
     show(cb) {
       this.showFlag = true;
-      typeof cb === "function " && cb.call(this, this);
+      typeof cb === "function" && cb.call(this, this);
       return new Promise((resolve, reject) => {
         this.reject = reject;
         this.resolve = resolve;

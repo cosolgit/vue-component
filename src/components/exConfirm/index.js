@@ -10,9 +10,7 @@ const initInstance = () => {
 };
 
 export default options => {
-  if (!newInstance) {
-    initInstance();
-  }
+  !newInstance && initInstance();
 
   Object.assign(newInstance, options);
 
@@ -20,3 +18,4 @@ export default options => {
     newInstance = null;
   });
 };
+
