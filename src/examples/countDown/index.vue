@@ -20,8 +20,6 @@
     </CountDown>
     <br />
     <button @click="SMSModeStart">开始</button>
-    <br />
-    <br />
   </div>
 </template>
 

@@ -9,8 +9,9 @@
   问题
     去到其他页面之后再回来，倒计时的分秒数不正确
       切换页面后,浏览器为了降低性能 ,会自动延长定时器的时间间隔,导致误差越来越大
+        
 */
-import { requestAnimationFraeme, cancleAnimationFrame } from "utils/requestAnimationFrame";
+import { requestAnimationFraeme, cancleAnimationFrame } from "utils/requestAnimationFrame"
 const COUNTDOWN = "__SMS_total_time__";
 export default {
   name: "CountDown",
@@ -34,6 +35,7 @@ export default {
     }
   },
   beforeDestroy() {
+    localStorage.removeItem(COUNTDOWN);
     this.pause();
   },
   data() {
@@ -45,9 +47,8 @@ export default {
         hours: 0,
         minutes: 0,
         seconds: 0,
-        leftDuration: this.totalTime || 0,
+        leftDuration: localStorage.getItem(COUNTDOWN) || this.totalTime,
       },
-      value: 0,
     };
   },
   methods: {
@@ -55,55 +56,52 @@ export default {
       !this.timer && this.initTime();
     },
     pause() {
-      cancelAnimationFrame(this.timer);
-      this.timer = null;
-      Object.assign(this.$data, this.$options.data());
+      clearTimeout(this.timer);
+      this.timer = null
     },
     isType(target) {
-      return type => Object.prototype.toString.call(target) === `[object ${type}]`;
+      return (type) =>
+        Object.prototype.toString.call(target) === `[object ${type}]`;
     },
     initTime() {
-      let time,
-        count = () => {
-          if (this.isSMSMode) {
-            if (this.date.leftDuration >= 0) {
-              time = this.value - Date.now();
-              this.date.leftDuration = parseInt(time / 1000);
-            }
-          } else {
-            time = this.value.getTime() - Date.now();
-            this.normalizeTime(time);
-          }
-
-          if (time > 0) {
-            this.timer = requestAnimationFraeme(count);
-          } else {
+      if (this.isSMSMode && this.date.leftDuration > 0) {
+        this.subSetInterval((timer) => {
+          localStorage.setItem(COUNTDOWN, (this.date.leftDuration -= 1));
+          this.timer = timer;
+          if (Number(localStorage.getItem(COUNTDOWN)) === 0) {
             this.$emit("end");
             this.pause();
+            localStorage.removeItem(COUNTDOWN);
           }
-        };
-
-      if (this.isSMSMode && this.date.leftDuration > 0) {
-        this.value = Date.now() + this.date.leftDuration * 1000;
+        }, 1000);
       } else {
+        let time,diff;
         let isType = this.isType(this.time);
         if (isType("Date")) {
-          this.value = this.time;
+          time = this.time;
         } else if (isType("String")) {
-          ["-", "."].forEach(item => {
+          ["-", "."].forEach((item) => {
             if (this.time.includes(item)) {
               //月份-1
               const temp = this.time.split(item);
               temp[1] = temp[1] - 1;
-              this.value = new Date(...temp);
+              time = new Date(...temp);
             }
           });
         } else if (isType("Number")) {
-          this.time.toString().length === 13 && (this.value = new Date(this.time));
+          this.time.toString().length === 13 && (time = new Date(this.time));
         }
-      }
 
-      this.timer = requestAnimationFraeme(count);
+        this.subSetInterval((timer) => {
+          time -= 1000;
+          this.timer = timer;
+          if (time <= 0) {
+            this.$emit("end");
+            this.pause();
+          }
+          this.normalizeTime(time);
+        }, 1000);
+      }
     },
     normalizeTime(time) {
       const timeUnits = [
@@ -116,7 +114,7 @@ export default {
       ];
 
       timeUnits.reduce((current, [name, unit]) => {
-        if (typeof this.date[name] != "undefined") {
+        if(typeof this.date[name] != "undefined"){
           const value = Math.floor(time / unit);
           time -= value * unit;
 
@@ -125,8 +123,19 @@ export default {
         }
       }, this.date);
     },
+    subSetInterval(fn, delay) {
+      let timer;
+      const loop = (fn, delay) => {
+        timer = setTimeout(() => {
+          loop(fn, delay);
+          fn.call(this, timer);
+        }, delay);
+      };
+      loop(fn, delay);
+    },
   },
 };
 </script>
 
-<style></style>
+<style>
+</style>

@@ -12,7 +12,8 @@ module.exports = {
                 src: resolve("src"),
                 com: resolve("src/components"),
                 examples: resolve("src/examples"),
-                mixins: resolve("src/mixins")
+                mixins: resolve("src/mixins"),
+                utils: resolve("src/utils"),
             },
         },
     },
