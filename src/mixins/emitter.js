@@ -1,5 +1,3 @@
-import { component } from "vue/types/umd";
-
 export default {
     methods: {
         broadcast(componentName, eventName, params) {

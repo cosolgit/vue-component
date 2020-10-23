@@ -27,6 +27,10 @@ const routes = [
     {
         path: "/countDown",
         component: () => import("examples/countDown"),
+    },
+    {
+        path: "/drag",
+        component: () => import("examples/drag"),
     }
 ];
 const router = new Router({ routes });
