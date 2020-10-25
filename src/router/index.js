@@ -17,10 +17,6 @@ const routes = [
         component: () => import("examples/imgLabel"),
     },
     {
-        path: "/slideCheck",
-        component: () => import("examples/slideCheck"),
-    },
-    {
         path: "/exConfirm",
         component: () => import("examples/exConfirm"),
     },
@@ -31,6 +27,10 @@ const routes = [
     {
         path: "/drag",
         component: () => import("examples/drag"),
+    },
+    {
+        path:"/watermark",
+        component: () => import("examples/watermark")
     }
 ];
 const router = new Router({ routes });

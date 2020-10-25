@@ -5,4 +5,5 @@
 4. 倒计时(countDown)
 6. 拖拽(drag)
 7. 大文件上传(fileupload)
-8.
+8. 添加水印(watermark)
+9. 
